@@ -56,6 +56,7 @@ export type CalculatorAction =
   | { type: 'backspace' }
   | { type: 'toggleSign' }
   | { type: 'percent' }
+  | { type: 'sqrt' }
 
 export function calculatorReducer(
   state: CalculatorState,
@@ -100,6 +101,29 @@ export function calculatorReducer(
         ...state,
         display: formatNumber(value),
         waitingForOperand: false,
+      }
+    }
+
+    case 'sqrt': {
+      if (state.display === 'Error') return state
+      const current = parseDisplay(state.display)
+      if (Number.isNaN(current)) return state
+      const result = current < 0 ? NaN : Math.sqrt(current)
+      const formatted = formatNumber(result)
+      const operand = formatNumber(current)
+      const expression = `√(${operand})`
+
+      if (formatted === 'Error') {
+        return { ...initialState, display: 'Error', expression }
+      }
+
+      return {
+        ...state,
+        display: formatted,
+        expression,
+        previousValue: null,
+        operator: null,
+        waitingForOperand: true,
       }
     }
 

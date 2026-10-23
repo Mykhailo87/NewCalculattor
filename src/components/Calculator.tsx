@@ -15,6 +15,7 @@ interface KeyDef {
   kind: ButtonKind
   action: CalculatorAction
   wide?: boolean
+  ariaLabel?: string
 }
 
 const KEYS: KeyDef[] = [
@@ -35,6 +36,12 @@ const KEYS: KeyDef[] = [
   { label: '3', kind: 'digit', action: { type: 'digit', digit: '3' } },
   { label: '+', kind: 'operator', action: { type: 'operator', operator: '+' } },
   { label: '±', kind: 'function', action: { type: 'toggleSign' } },
+  {
+    label: '√',
+    kind: 'function',
+    action: { type: 'sqrt' },
+    ariaLabel: 'Square root',
+  },
   { label: '0', kind: 'zero', action: { type: 'digit', digit: '0' }, wide: true },
   { label: '.', kind: 'digit', action: { type: 'decimal' } },
   { label: '%', kind: 'function', action: { type: 'percent' } },
@@ -85,11 +92,12 @@ export default function Calculator() {
               'key',
               `key--${key.kind}`,
               key.wide ? 'key--wide' : '',
+              key.action.type === 'sqrt' ? 'key--sqrt' : '',
             ]
               .filter(Boolean)
               .join(' ')}
             onClick={() => handleAction(key.action)}
-            aria-label={key.label}
+            aria-label={key.ariaLabel ?? key.label}
           >
             {key.label}
           </button>

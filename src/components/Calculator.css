@@ -134,6 +134,11 @@
   font-size: 1rem;
 }
 
+.key--sqrt {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
 .key--operator {
   background: var(--key-operator-bg);
   color: var(--key-operator-text);
